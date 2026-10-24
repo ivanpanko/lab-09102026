@@ -24,6 +24,8 @@ input, textarea {
     margin: 10px 0;
     box-sizing: border-box;
     font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 textarea {
@@ -61,37 +63,53 @@ button {
     background: white;
     border: 2px solid #222;
     border-radius: 8px;
-    padding: 10px;
+    padding: 15px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .product-image {
     width: 100%;
-    height: 200px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .product-image img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
 }
 
 .product-title {
-    font-size: 20px;
+    font-size: 18px;
+    margin: 12px 0 6px;
 }
 
 .product-desc {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
+    color: #555;
+    font-size: 14px;
+    flex-grow: 1;
 }
 
 .price {
     font-size: 20px;
     font-weight: bold;
+    color: #2c3e50;
+    margin: 10px 0;
 }
 
 .add-to-cart-btn {
     background: lightgreen;
+    font-weight: bold;
 }
 
 .edit-btn {
@@ -106,4 +124,7 @@ button {
     border-bottom: 1px solid #ddd;
     padding-bottom: 8px;
     overflow-wrap: anywhere;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
