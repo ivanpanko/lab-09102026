@@ -1,39 +1,36 @@
 <!DOCTYPE html>
 <html lang="uk">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Магазин комп'ютерів</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин комп'ютерів</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-        <h1>Магазин комп'ютерів</h1>
+    <h1>Магазин комп'ютерів</h1>
 
-        <!-- Панель керування товарами -->
-        <div class="admin">
-            <h2>Панель керування товарами</h2>
+    <div class="admin">
+        <h2>Панель керування товарами</h2>
 
-            <input id="title" placeholder="Назва товару">
-            <textarea id="description" placeholder="Опис товару"></textarea>
-            <input id="price" type="number" min="1" placeholder="Ціна">
-            <input id="image" type="url" placeholder="Посилання на фото">
+        <input id="title" type="text" placeholder="Назва товару">
+        <textarea id="description" placeholder="Опис товару"></textarea>
+        <input id="price" type="number" min="1" placeholder="Ціна (₴)">
+        <input id="image" type="url" placeholder="Посилання на фото (https://...)">
 
-            <button id="save-btn">Додати товар</button>
-            <button id="cancel-btn" style="display: none;">Скасувати</button>
-        </div>
+        <button id="save-btn">Додати товар</button>
+        <button id="cancel-btn" style="display: none;">Скасувати</button>
+    </div>
 
-        <!-- Кошик -->
-        <div class="cart">
-            <h2>🛒 Кошик: <span id="cart-count">0</span></h2>
-            <div id="cart-items"></div>
-            <h3>Загальна сума: <span id="total">0</span> ₴</h3>
-        </div>
+    <div class="cart">
+        <h2>🛒 Кошик: <span id="cart-count">0</span></h2>
+        <div id="cart-items"></div>
+        <h3>Загальна сума: <span id="total">0</span> ₴</h3>
+    </div>
 
-        <!-- Картки товарів -->
-        <h2>Наші товари</h2>
-        <div id="products" class="carts"></div>
+    <h2>Наші товари</h2>
+    <div id="products" class="carts"></div>
 
-        <script src="script.js"></script>
-    </body>
+    <script src="script.js"></script>
+</body>
 </html>
