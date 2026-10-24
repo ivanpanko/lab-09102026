@@ -1,29 +1,53 @@
-let products = JSON.parse(localStorage.getItem("products")) || [
+const defaultProducts = [
     {
-        title: 'Ігровий ПК LIBOR',
-        description: 'Intel Core i5-6500, GTX 1060 6GB, 16GB RAM, SSD 500GB. Комплект з монітором.',
+        title: 'Ігровий ПК LIBOR Extreme',
+        description: 'Intel Core i5-12400F, RTX 3060 12GB, 16GB RAM, SSD 1TB. Чудовий вибір для Full HD ігор.',
         price: 28854,
-        image: 'https://images.prom.ua/6605952182_w640_h640_6605952182.jpg'
+        image: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=500&q=80'
     },
     {
-        title: 'Ігровий ПК LIBOR',
-        description: 'Ігровий комп’ютер з монітором.',
-        price: 28854,
-        image: 'https://images.prom.ua/6605952182_w640_h640_6605952182.jpg'
+        title: 'Ноутбук ASUS TUF Gaming',
+        description: 'AMD Ryzen 7 6800H, RTX 3050 Ti, 16GB DDR5, 512GB SSD, 144Hz IPS екран.',
+        price: 42500,
+        image: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&q=80'
     },
     {
-        title: 'Ігровий ПК LIBOR',
-        description: 'Комплект для ігор у Full HD.',
-        price: 28854,
-        image: 'https://images.prom.ua/6605952182_w640_h640_6605952182.jpg'
+        title: 'Монітор Samsung Odyssey G5 27"',
+        description: '2560x1440 2K WQHD, 144 Hz, 1ms, VA вигнутий матричний дисплей для геймінгу.',
+        price: 9999,
+        image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&q=80'
+    },
+    {
+        title: 'Клавіатура HyperX Alloy FPS',
+        description: 'Механічна ігрова клавіатура з RGB підсвіткою та перемикачами Cherry MX Red.',
+        price: 3499,
+        image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&q=80'
     }
 ];
+
+const savedData = localStorage.getItem("products");
+let products = savedData ? JSON.parse(savedData) : [];
+
+if (!Array.isArray(products) || products.length === 0) {
+    products = [...defaultProducts];
+    saveProducts();
+}
 
 let editIndex = -1;
 let cart = [];
 
-let productsBlock = document.getElementById("products");
-let cartItems = document.getElementById("cart-items");
+const productsBlock = document.getElementById("products");
+const cartItems = document.getElementById("cart-items");
+const cartCount = document.getElementById("cart-count");
+const totalSum = document.getElementById("total");
+
+const titleInput = document.getElementById("title");
+const descriptionInput = document.getElementById("description");
+const priceInput = document.getElementById("price");
+const imageInput = document.getElementById("image");
+
+const saveBtn = document.getElementById("save-btn");
+const cancelBtn = document.getElementById("cancel-btn");
 
 function saveProducts() {
     localStorage.setItem("products", JSON.stringify(products));
@@ -32,76 +56,68 @@ function saveProducts() {
 function showProducts() {
     productsBlock.innerHTML = "";
 
-    products.forEach(function(product, index) {
-        let card = document.createElement("div");
+    products.forEach((product, index) => {
+        const card = document.createElement("div");
         card.className = "product-card";
 
-        let imageBlock = document.createElement("div");
+        const imageBlock = document.createElement("div");
         imageBlock.className = "product-image";
 
-        let img = document.createElement("img");
+        const img = document.createElement("img");
         img.src = product.image;
         img.alt = product.title;
 
-        img.onerror = function() {
-            img.style.display = "none";
+        img.onerror = () => {
+            img.src = "https://via.placeholder.com/300x200?text=Немає+зображення";
         };
 
         imageBlock.appendChild(img);
 
-        let title = document.createElement("h2");
+        const title = document.createElement("h2");
         title.className = "product-title";
         title.textContent = product.title;
 
-        let description = document.createElement("p");
+        const description = document.createElement("p");
         description.className = "product-desc";
         description.textContent = product.description;
 
-        let price = document.createElement("p");
+        const price = document.createElement("p");
         price.className = "price";
-        price.textContent =
-            product.price.toLocaleString("uk-UA") + " ₴";
+        price.textContent = `${product.price.toLocaleString("uk-UA")} ₴`;
 
-        let addButton = document.createElement("button");
+        const addButton = document.createElement("button");
         addButton.className = "add-to-cart-btn";
         addButton.textContent = "Додати в кошик";
-
-        addButton.onclick = function() {
+        addButton.onclick = () => {
             cart.push({
                 title: product.title,
                 price: product.price
             });
-
             showCart();
         };
 
-        let editButton = document.createElement("button");
+        const editButton = document.createElement("button");
         editButton.className = "edit-btn";
         editButton.textContent = "Редагувати";
-
-        editButton.onclick = function() {
-            document.getElementById("title").value = product.title;
-            document.getElementById("description").value =
-                product.description;
-            document.getElementById("price").value = product.price;
-            document.getElementById("image").value = product.image;
+        editButton.onclick = () => {
+            titleInput.value = product.title;
+            descriptionInput.value = product.description;
+            priceInput.value = product.price;
+            imageInput.value = product.image;
 
             editIndex = index;
 
-            document.getElementById("save-btn").textContent =
-                "Зберегти зміни";
-            document.getElementById("cancel-btn").style.display =
-                "inline-block";
+            saveBtn.textContent = "Зберегти зміни";
+            cancelBtn.style.display = "inline-block";
 
-            window.scrollTo(0, 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        let deleteButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
         deleteButton.className = "delete-btn";
         deleteButton.textContent = "Видалити";
-
-        deleteButton.onclick = function() {
-            if (confirm("Ви справді хочете видалити товар?")) {
+        deleteButton.onclick = () => {
+            if (confirm(`Ви справді хочете видалити товар "${product.title}"?`)) {
                 products.splice(index, 1);
                 saveProducts();
                 showProducts();
@@ -124,21 +140,18 @@ function showProducts() {
 
 function showCart() {
     cartItems.innerHTML = "";
-
     let sum = 0;
 
-    cart.forEach(function(item, index) {
+    cart.forEach((item, index) => {
         sum += item.price;
 
-        let row = document.createElement("p");
-        row.textContent =
-            item.title + " — " +
-            item.price.toLocaleString("uk-UA") + " ₴ ";
+        const row = document.createElement("p");
+        row.textContent = `${item.title} — ${item.price.toLocaleString("uk-UA")} ₴ `;
 
-        let removeButton = document.createElement("button");
+        const removeButton = document.createElement("button");
+        removeButton.className = "delete-btn";
         removeButton.textContent = "Видалити";
-
-        removeButton.onclick = function() {
+        removeButton.onclick = () => {
             cart.splice(index, 1);
             showCart();
         };
@@ -147,32 +160,29 @@ function showCart() {
         cartItems.appendChild(row);
     });
 
-    document.getElementById("cart-count").textContent = cart.length;
-    document.getElementById("total").textContent =
-        sum.toLocaleString("uk-UA");
+    cartCount.textContent = cart.length;
+    totalSum.textContent = sum.toLocaleString("uk-UA");
 }
 
 function resetForm() {
-    document.getElementById("title").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("image").value = "";
+    titleInput.value = "";
+    descriptionInput.value = "";
+    priceInput.value = "";
+    imageInput.value = "";
 
     editIndex = -1;
 
-    document.getElementById("save-btn").textContent = "Додати товар";
-    document.getElementById("cancel-btn").style.display = "none";
+    saveBtn.textContent = "Додати товар";
+    cancelBtn.style.display = "none";
 }
 
-document.getElementById("save-btn").onclick = function() {
-    let title = document.getElementById("title").value.trim();
-    let description =
-        document.getElementById("description").value.trim();
-    let price = Number(document.getElementById("price").value);
-    let image = document.getElementById("image").value.trim();
+saveBtn.onclick = () => {
+    const title = titleInput.value.trim();
+    const description = descriptionInput.value.trim();
+    const price = Number(priceInput.value);
+    const image = imageInput.value.trim();
 
-    if (!title || !description || !image ||
-        !Number.isFinite(price) || price <= 0) {
+    if (!title || !description || !image || !Number.isFinite(price) || price <= 0) {
         alert("Заповніть усі поля та вкажіть правильну ціну!");
         return;
     }
@@ -182,11 +192,11 @@ document.getElementById("save-btn").onclick = function() {
         return;
     }
 
-    let product = {
-        title: title,
-        description: description,
-        price: price,
-        image: image
+    const product = {
+        title,
+        description,
+        price,
+        image
     };
 
     if (editIndex === -1) {
@@ -200,7 +210,7 @@ document.getElementById("save-btn").onclick = function() {
     showProducts();
 };
 
-document.getElementById("cancel-btn").onclick = resetForm;
+cancelBtn.onclick = resetForm;
 
 showProducts();
 showCart();
